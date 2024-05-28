@@ -6,6 +6,7 @@ Spaceship::Spaceship()
     position.x = (GetScreenWidth() - image.width)/2;
     position.y = (GetScreenHeight() - image.height - 100);
     lastFireTime = 0.0;
+    level = 1;
     laserSound = LoadSound("sounds/laser.mp3");
 }
 
@@ -37,7 +38,13 @@ void Spaceship::moveRight()
 void Spaceship::fireLaser()
 {
     // cooldown
-    if(GetTime() - lastFireTime >= 0.25)
+    if(GetTime() - lastFireTime >= 0.25 - level * 0.02)
+    {
+        lasers.push_back(Laser({position.x + image.width/2 - 2,position.y}, -7));
+        lastFireTime = GetTime();
+        PlaySound(laserSound);
+    }
+    if(isBuffed)
     {
         lasers.push_back(Laser({position.x + image.width/2 - 2,position.y}, -7));
         lastFireTime = GetTime();
@@ -54,5 +61,6 @@ void Spaceship::reset()
 {
     position.x = (GetScreenWidth() - image.width)/2;
     position.y = (GetScreenHeight() - image.height - 100);
+    level = 1;
     lasers.clear();
 }

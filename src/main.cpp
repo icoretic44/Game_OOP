@@ -68,12 +68,12 @@ void gamestart()
 
         //display player's score
         DrawTextEx(font, "SCORE:", {50,15}, 34, 2, yellow);
-        std::string scoreText = FormatWithLeadingZeros(game.score, 5);
+        std::string scoreText = FormatWithLeadingZeros(game.score, 7);
         DrawTextEx(font, scoreText.c_str(), {50, 40}, 34, 2, yellow);
 
         //display player's highscore
         DrawTextEx(font, "HIGH-SCORE", {480, 15}, 34, 2, yellow);
-        std::string highscoreText = FormatWithLeadingZeros(game.highscore, 5);
+        std::string highscoreText = FormatWithLeadingZeros(game.highscore, 7);
         DrawTextEx(font, highscoreText.c_str(), {480, 40}, 34, 2, yellow);
 
         //draw game frame

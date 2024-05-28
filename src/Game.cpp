@@ -154,6 +154,13 @@ void Game::alienShootLaser()
 
 void Game::checkForCollisions()
 {
+    //check remain buff time of spaceship
+    if(spaceship.isBuffed && GetTime() - spaceship.buffTime >= 2)
+    {
+        spaceship.isBuffed = false;
+        spaceship.buffTime = 0.0;
+    }
+
     // spaceship's laser
     for(auto& laser: spaceship.lasers)
     {
@@ -163,7 +170,7 @@ void Game::checkForCollisions()
             if(CheckCollisionRecs(it->getRect() , laser.getRect()))
             {
                 //calculate score
-                score += 100*it->getType();
+                score += 100*( it->getType() + level);
                 checkHighScore();
 
                 PlaySound(explosionSound);
@@ -179,13 +186,17 @@ void Game::checkForCollisions()
     // alien's laser
     for(auto& laser: alienLaser)
     {
-        if(CheckCollisionRecs(laser.getRect(),spaceship.getRect()))
+        if(!spaceship.isBuffed && CheckCollisionRecs(laser.getRect(),spaceship.getRect()))
         {
             laser.active = false;
             spaceship.lives --;
-
+            spaceship.buffTime = GetTime();
+            spaceship.isBuffed = true;
             if(spaceship.lives == 0)
+            {
                 gameOver();
+                return;
+            }
         }
     }
 
@@ -193,7 +204,10 @@ void Game::checkForCollisions()
     for(auto& alien : aliens)
     {
         if(CheckCollisionRecs(alien.getRect(),spaceship.getRect()))
+        {
             gameOver();
+            return;
+        }
     }
 
     // check if player win the game

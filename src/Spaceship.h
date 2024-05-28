@@ -15,6 +15,9 @@ class Spaceship
         int lives;
         Texture2D image;
         Sound laserSound;
+        float buffTime;
+        bool isBuffed;
+        int level;
 
         Spaceship();
         ~Spaceship();
